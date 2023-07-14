@@ -6,6 +6,11 @@
                 <playerAlphabetsAndScores />
                 <boxesComponent />
             </div>
+            
+            <div class="text-center py-1">
+                <button class="bg-green-700 m-3 rounded-full px-6 p-2 text-white" @click="gameStore.resetAndRestart()" type="">NEXT</button>
+                <button class="bg-green-700 m-3 rounded-full px-6 p-2 text-white" @click="gameStore.clearAndRestart()" type="">RESET</button>
+            </div>
         </div>
     </div>
 </template>

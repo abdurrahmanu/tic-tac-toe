@@ -1,5 +1,5 @@
 <template>
-        <div :class="[gameStore.isDarkMode ? 'text-black' : 'text-white']" class="text-[50px] w-full font-black flex gap-4 place-content-center bg-teal-700 font-mono text-center border-black h-24 p-4 m-auto relative">        
+        <div :class="[gameStore.isDarkMode ? 'text-black' : 'text-white']" class="text-[50px] w-full font-black flex gap-4 place-content-center bg-teal-800 font-mono text-center border-black h-24 p-4 m-auto relative">        
                 <nightSvg @click="gameStore.isDarkMode = !gameStore.isDarkMode" />
                 <moreSvg class="sm:hidden" @click="gameStore.toggleSideBar = true" />
                 <sideBar />

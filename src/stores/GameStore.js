@@ -6,9 +6,9 @@ export const useGameStore = defineStore('gameStore', {
     playerOneAlphabet: '',
     boxes: [],
     drawTies: 0,
-    isDarkMode : false,
+    isDarkMode : localStorage.getItem('bgMode'),
     playHasStarted: false,
-    toggleModal: false,
+    toggleModal: true,
     toggleSideBar: false,
     playerTwoAlphabet : '',
     playerOneArray : [],
@@ -71,7 +71,9 @@ export const useGameStore = defineStore('gameStore', {
       this.playAudio('../../public/audio/chooseAlphabetSound.mp3');
       if (this.playerOneAlphabet === 'X') this.playerTwoAlphabet = 'O';
       else this.playerTwoAlphabet = 'X';
-      this.toggleModal = false;
+      setTimeout(() => {        
+        this.toggleModal = false;
+      }, 200);
     },
     checkWin(player) {
       if (player === 'first') {
@@ -94,7 +96,9 @@ export const useGameStore = defineStore('gameStore', {
 
           if ((this.playerOneArray.length === 5) && !win) {
             this.drawTies++
-            this.resetAndRestart()
+            setTimeout(() => {              
+              this.resetAndRestart()
+            }, 300);
           }
         }
       } else {
@@ -117,8 +121,11 @@ export const useGameStore = defineStore('gameStore', {
           }
 
           if ((this.playerTwoArray.length === 5) && !win) {
+            console.log('draww');
             this.drawTies++;
-            this.resetAndRestart();
+            setTimeout(() => {
+              this.resetAndRestart()
+            }, 300);
           }
         }
       }
@@ -131,31 +138,12 @@ export const useGameStore = defineStore('gameStore', {
       this.playerTwoArray = [];
       this.playHasStarted = false;
       this.winnerCombination = [];
+    },
+    clearAndRestart() {
+      this.resetAndRestart()
+      this.playerOneWins = 0
+      this.playerTwoWins = 0
     }
   }
 })
-
-
-// winLogic(arr, wins, alphabet) {
-//   for (let index = 0; index < this.winCombo.length; index++) {
-//     const subArray = this.winCombo[index];
-
-//     let win = subArray.every((element) => {
-//       return arr.includes(element) === true;
-//     });
-
-//     if (win) {
-//       this.winnerCombination = subArray;
-//       wins++;
-//       this.currentPlayer = alphabet;
-//       this.playAudio('../../public/audio/winSound.mp3');
-//       setTimeout(() => {
-//         this.resetAndRestart();
-//       }, 900);
-//       return;
-//     }
-//   }
-// },
-
-
 
