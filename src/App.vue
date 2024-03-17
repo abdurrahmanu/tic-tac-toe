@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeMount, onMounted, ref, watchEffect } from 'vue';
-import HomeView from './views/HomeView.vue';
+import MainComponent from './components/mainComponent.vue';
 import { useGameStore } from './stores/GameStore';
 
 const gameStore = useGameStore()
@@ -21,7 +21,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <HomeView />
+  <MainComponent />
 </template>
 
 <style scoped>

@@ -8,7 +8,7 @@ export const useGameStore = defineStore('gameStore', {
     drawTies: 0,
     isDarkMode : localStorage.getItem('bgMode'),
     playHasStarted: false,
-    toggleModal: true,
+    selectPlayerAlphabet: true,
     toggleSideBar: false,
     playerTwoAlphabet : '',
     playerOneArray : [],
@@ -72,7 +72,7 @@ export const useGameStore = defineStore('gameStore', {
       if (this.playerOneAlphabet === 'X') this.playerTwoAlphabet = 'O';
       else this.playerTwoAlphabet = 'X';
       setTimeout(() => {        
-        this.toggleModal = false;
+        this.selectPlayerAlphabet = false;
       }, 200);
     },
     checkWin(player) {
@@ -121,7 +121,6 @@ export const useGameStore = defineStore('gameStore', {
           }
 
           if ((this.playerTwoArray.length === 5) && !win) {
-            console.log('draww');
             this.drawTies++;
             setTimeout(() => {
               this.resetAndRestart()
@@ -130,6 +129,7 @@ export const useGameStore = defineStore('gameStore', {
         }
       }
     },
+    
     resetAndRestart() {
       this.boxes.forEach(each => {
           each.innerText = '';
@@ -139,6 +139,7 @@ export const useGameStore = defineStore('gameStore', {
       this.playHasStarted = false;
       this.winnerCombination = [];
     },
+
     clearAndRestart() {
       this.resetAndRestart()
       this.playerOneWins = 0

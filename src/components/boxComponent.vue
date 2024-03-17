@@ -9,12 +9,10 @@
 </template>
 
 <script setup>
-import { defineProps,  } from 'vue';
 import { useGameStore } from '../stores/GameStore';
 
 const gameStore = useGameStore()
 const props = defineProps({
     index: Number
 })
-
 </script>

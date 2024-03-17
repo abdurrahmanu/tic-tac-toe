@@ -7,8 +7,7 @@ const gameStore = useGameStore()
 </script>
 
 <template>
-    <MainComponent />
-    <ModalComponent/>
+
 </template>
 
 
