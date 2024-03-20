@@ -90,10 +90,9 @@ export const useGameStore = defineStore('gameStore', () => {
           else {
             winCombo.value.filter(singleWinArray => {
               if (playerOneArray.value.every(index => singleWinArray.includes(index))) {
-                computerBoxChoice.value = singleWinArray.filter(index =>!playerOneArray.value.includes(index) )
+                computerBoxChoice.value = singleWinArray.filter(index =>!playerOneArray.value.includes(index)) - 1
               }
             })
-            console.log(computerBoxChoice.value);
           }
 
           computerArray.value.push(computerBoxChoice.value + 1)
