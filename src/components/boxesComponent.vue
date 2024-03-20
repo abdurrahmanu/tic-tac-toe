@@ -1,6 +1,6 @@
 <template>
         <div  class="relative z-30 pt-4 md:w-full md:h-full md:grid md:place-content-center">
-            <div ref="boxes" :class="{'gap-3': gameStore.isDarkMode}"  class="grid grid-cols-3 grid-rows-3 xs  md:w-[400px] md:h-[400px] w-[300px] min-w-[150px] h-[300px] justify-center m-auto">
+            <div ref="boxesContainer" :class="{'gap-3': gameStore.isDarkMode}"  class="grid grid-cols-3 grid-rows-3 xs  md:w-[400px] md:h-[400px] w-[300px] min-w-[150px] h-[300px] justify-center m-auto">
                 <boxComponent
                 v-for="index in 9" 
                 :key="index" :index="index" />
@@ -16,21 +16,21 @@
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/GameStore';
 import boxComponent from './boxComponent.vue'
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, watchEffect } from 'vue';
 
-const boxes = ref([])
+const boxesContainer = ref([])
 
 const gameStore = useGameStore()
-const {playHasStarted, playerOneWins, currentPlayer, playerTwoWins, drawTies, computerBoxChoice, computerAlphabet, vsComputer} = storeToRefs(gameStore)
+const {playHasStarted, playerOneWins, boxes, playerTwoWins, drawTies, computerBoxChoice, computerAlphabet, vsComputer} = storeToRefs(gameStore)
 const {resetAndRestart, clearAndRestart} = gameStore
 
 onMounted(() => {
     watch(computerBoxChoice, (newVal) => {
-        console.log(newVal);
-        if (vsComputer.value && computerAlphabet.value && boxes.value instanceof HTMLDivElement) {      
-            setTimeout(() => {        
-                Array.from(boxes.value.children)[newVal].innerText = computerAlphabet.value
+        if (playHasStarted.value && vsComputer.value && boxesContainer.value instanceof HTMLDivElement) {      
+            setTimeout(() => {      
+                Array.from(boxesContainer.value.children)[newVal].innerText = computerAlphabet.value
             }, 100);
+            boxes.value.push(Array.from(boxesContainer.value.children)[newVal])
         }
     })
 })
