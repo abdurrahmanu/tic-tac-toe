@@ -19,7 +19,7 @@ export const useGameStore = defineStore('gameStore', () => {
     const playerTwoWins = ref(0)
     const vsComputer = ref(false)
     const computerAlphabet = ref('')
-    const computerBoxChoice = ref()
+    const computerChoiceIndex = ref()
     const computerWins = ref(0)
     
     const winCombo = ref([
@@ -56,79 +56,74 @@ export const useGameStore = defineStore('gameStore', () => {
 
 
       if (currentPlayer.value === computerAlphabet.value) {
-        let lengthOfOpponentArray = playerOneArray.value.length
+        let numberOfOpponentPlays = playerOneArray.value.length
         
-        if (lengthOfOpponentArray === 1) {
-          const boxChoices = ref([])
+        // ...........................COMPUTER FIRST MOVE............................
+        if (numberOfOpponentPlays === 1) {
           if (playerOneArray.value[0] === 5) {
-            boxChoices.value = [0, 2, 6, 8]
-            let random = Math.round(Math.random() * (boxChoices.value.length - 1))
-            computerBoxChoice.value = boxChoices.value[random]
+            let boxChoices = [0, 2, 6, 8]
+            let random = Math.round(Math.random() * (boxChoices.length - 1))
+            computerChoiceIndex.value = boxChoices[random]
           }
-          else computerBoxChoice.value = 4
-          computerArray.value.push(computerBoxChoice.value + 1)
+
+          else computerChoiceIndex.value = 4
+          computerArray.value.push(computerChoiceIndex.value + 1)
         }
 
-        if (lengthOfOpponentArray === 2) {
-          let plays = [...playerOneArray.value, ...computerArray.value]
-          let boxChoices = ref([])
-          let playerOneTargetsTwoWays = ref(false)
+        // .....................COMPUTER SECOND MOVE........................
+        if (numberOfOpponentPlays === 2) {
+          const targetRow = winCombo.value.filter(singleWinArray => {
+            return playerOneArray.value.every(index => singleWinArray.includes(index))
+          })[0]
 
-          winCombo.value.filter(singleWinArray => {
-            if (plays.every(index => singleWinArray.includes(index))) {
-              playerOneTargetsTwoWays.value = true
-              return
+          
+          if (targetRow) {
+            const targetRowIsFilled = targetRow.includes(computerArray.value[0])
+
+            if (targetRowIsFilled) {
+              let choices = [1,3,5,7]
+              let random = Math.round(Math.random() * (choices.length - 1))
+              computerChoiceIndex.value = choices[random]
+            }  else {
+              let emptyCellIndex = targetRow.filter(cell => !playerOneArray.value.includes(cell)) - 1
+              computerChoiceIndex.value = emptyCellIndex
             }
-          })
-
-          if (playerOneTargetsTwoWays.value) {
-            if (computerArray.value[0] === 1 || computerArray.value[0] === 9)  boxChoices.value = [2, 6]
-            if (computerArray.value[0] === 3 || computerArray.value[0] === 7)  boxChoices.value = [0, 8]
-            let random = Math.round(Math.random() * (boxChoices.value.length - 1))
-            computerBoxChoice.value = boxChoices.value[random]
           }
           else {
-            winCombo.value.filter(singleWinArray => {
-              if (playerOneArray.value.every(index => singleWinArray.includes(index))) {
-                computerBoxChoice.value = singleWinArray.filter(index =>!playerOneArray.value.includes(index)) - 1
-              }
-            })
+
+            let possibleRows = winCombo.value.filter(singleWinArray => (singleWinArray.includes(playerOneArray.value[0]) || singleWinArray.includes(playerOneArray.value[1])) && !singleWinArray.includes(5))
+            console.log(possibleRows);
+
+            if (possibleRows.length === 2) {
+              let cell = possibleRows[0].filter((cell, index) => {
+                return possibleRows[1].includes(cell) 
+              }) - 1
+
+              computerChoiceIndex.value = cell
+            } else {
+              let cell = possibleRows[0].filter((cell, index) => {
+                return (possibleRows[1].includes(cell) || possibleRows[2].includes(cell)) && !playerOneArray.value.includes(cell)
+              }) - 1
+              
+              let cell2 = possibleRows[1].filter((cell, index) => {
+                return possibleRows[2].includes(cell) && !playerOneArray.value.includes(cell)
+              }) - 1
+
+              computerChoiceIndex.value = cell !== -1 ? cell : cell2
+            }
           }
 
-          computerArray.value.push(computerBoxChoice.value + 1)
+          computerArray.value.push(computerChoiceIndex.value + 1)
         }
 
-        if (lengthOfOpponentArray === 3) {
-          winCombo.value.filter(singleArray => {
-
-          })
-          // let targetArray = ref([])
-          // winCombo.value.filter(singleWinArray => {
-          //   if (playerOneArray.value.every(index => singleWinArray.includes(index))) {
-          //     targetArray.value = singleWinArray
-          //     return
-          //   }
-          // })
-
-          // let emptyCell = targetArray.value.filter(index =>!playerOneArray.value.includes(index) )
-          // computerBoxChoice.value = emptyCell
-          // computerArray.value.push(computerBoxChoice.value + 1)
+        //................COMPUTER THIRD MOVE......................
+        if (numberOfOpponentPlays === 3) {
 
         }
 
-        if (lengthOfOpponentArray === 4) {
-          // let targetArray = ref([])
-          // winCombo.value.filter(singleWinArray => {
-          //   if (playerOneArray.value.every(index => singleWinArray.includes(index))) {
-          //     targetArray.value = singleWinArray
-          //     return
-          //   }
-          // })
+        //...................COMPUTER FOURTH MOVE.................
+        if (numberOfOpponentPlays === 4) {
 
-          // let emptyCell = targetArray.value.filter(index =>!playerOneArray.value.includes(index) )
-          // computerBoxChoice.value = emptyCell
-          // computerArray.value.push(computerBoxChoice.value + 1)
-          // currentPlayer.value = playerOneAlphabet.value
         }
 
         currentPlayer.value = playerOneAlphabet.value
@@ -211,7 +206,7 @@ export const useGameStore = defineStore('gameStore', () => {
       playerTwoArray.value = [];
       if (vsComputer.value) {
         computerArray.value = []
-        computerBoxChoice.value = null
+        computerChoiceIndex.value = null
       }
       playHasStarted.value = false;
       winnerCombination.value = [];
@@ -234,7 +229,7 @@ export const useGameStore = defineStore('gameStore', () => {
       playerTwoWins,
       playerOneWins,
       winnerCombination,
-      computerBoxChoice,
+      computerChoiceIndex,
       currentPlayer,
       playerTwoArray,
       playerOneArray,

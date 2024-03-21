@@ -21,11 +21,11 @@ import { onMounted, ref, watch, watchEffect } from 'vue';
 const boxesContainer = ref([])
 
 const gameStore = useGameStore()
-const {playHasStarted, playerOneWins, boxes, playerTwoWins, drawTies, computerBoxChoice, computerAlphabet, vsComputer} = storeToRefs(gameStore)
+const {playHasStarted, playerOneWins, boxes, playerTwoWins, drawTies, computerChoiceIndex, computerAlphabet, vsComputer} = storeToRefs(gameStore)
 const {resetAndRestart, clearAndRestart} = gameStore
 
 onMounted(() => {
-    watch(computerBoxChoice, (newVal) => {
+    watch(computerChoiceIndex, (newVal) => {
         if (playHasStarted.value && vsComputer.value && boxesContainer.value instanceof HTMLDivElement) {      
             setTimeout(() => {      
                 Array.from(boxesContainer.value.children)[newVal].innerText = computerAlphabet.value
