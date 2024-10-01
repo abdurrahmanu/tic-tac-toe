@@ -17,7 +17,7 @@ export const useGameStore = defineStore('gameStore', () => {
     const drawTies = ref(0)
     const playerOneWins = ref(0)
     const playerTwoWins = ref(0)
-    const vsComputer = ref(false)
+    const vsPC = ref(false)
     const computerAlphabet = ref('')
     const computerChoiceIndex = ref()
     const computerWins = ref(0)
@@ -47,11 +47,11 @@ export const useGameStore = defineStore('gameStore', () => {
 
       if (currentPlayer.value === playerOneAlphabet.value) {
         e.target.innerText = playerOneAlphabet.value;
-        if (vsComputer.value) currentPlayer.value = computerAlphabet.value
+        if (vsPC.value) currentPlayer.value = computerAlphabet.value
         else currentPlayer.value = playerTwoAlphabet.value;
         playerOneArray.value.push(toNumber(e.target.id));
         if (playerOneArray.value.length > 2) checkWin(1);
-        if (!vsComputer.value) return;
+        if (!vsPC.value) return;
       } 
 
 
@@ -139,7 +139,7 @@ export const useGameStore = defineStore('gameStore', () => {
     }
 
     function setPlayerOneAlphabet(event) {
-      if (vsComputer.value) {
+      if (vsPC.value) {
         event === 'X' ? computerAlphabet.value = 'O' : computerAlphabet.value = 'X'
     } 
     else {
@@ -204,7 +204,7 @@ export const useGameStore = defineStore('gameStore', () => {
       });
       playerOneArray.value = [];
       playerTwoArray.value = [];
-      if (vsComputer.value) {
+      if (vsPC.value) {
         computerArray.value = []
         computerChoiceIndex.value = null
       }
@@ -241,7 +241,7 @@ export const useGameStore = defineStore('gameStore', () => {
       playHasStarted,
       selectPlayerAlphabet,
       isDarkMode,
-      vsComputer,
+      vsPC,
     }
 })
 
