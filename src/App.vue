@@ -1,5 +1,5 @@
 <template>
-<div class="min-h-screen m-auto bg-neutral-800 max-w-[900px]">
+<div class="min-h-screen m-auto bg-neutral-500 max-w-[900px] pt-14 selection:bg-none">
     <Header />
     <boxesComponent />
   </div>

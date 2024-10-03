@@ -1,25 +1,33 @@
 <template>
-    <div class="pt-3 m-auto font-mono text-slate-400 w-fit">
-        <div class="flex text-sm text-center border bg-neutral-600 border-neutral-700 whitespace-nowrap rounded-3xl">
-            <p @click="vsPC = false" :class="[vsPC ? 'border-transparent' : 'border-green-500 text-green-400']" class="p-4 py-1 rounded-l-3xl border hover:bg-neutral-900">PLAYER</p>
-            <p @click="vsPC = true" :class="[vsPC ? 'border-green-500 text-green-400' : 'border-transparent']" class="p-4 rounded-r-3xl border hover:bg-neutral-900 py-1">PC</p>
+    <div class="pt-3 m-auto font-mono text-black w-fit">
+        <div class="flex text-sm text-center shadow-sm shadow-black bg-neutral-500 whitespace-nowrap rounded-3xl w-fit m-auto">
+            <p @click="vsPC = false" :class="[vsPC ? 'border-transparent text-white' : 'border-green-500 bg-neutral-700 text-green-400']" class="p-4 py-1 rounded-l-3xl border hover:bg-neutral-700 flex items-center gap-1 cursor-default">
+                <img class="w-5 h-5" src="/avatar.svg" alt="">
+                <span class="text-slate-400">vs</span>
+                <img class="w-5 h-5" src="/avatar.svg" alt="">
+            </p>
+            <p @click="vsPC = true" :class="[vsPC ? 'border-green-500 bg-neutral-700 text-green-400' : 'border-transparent text-white']" class="p-4 rounded-r-3xl border hover:bg-neutral-700 py-1 flex items-center gap-1 cursor-default">
+                <img class="w-5 h-5 mr-[2px]" src="/keyboard.svg" alt="">
+                <span class="text-slate-400">vs</span>
+                <img class="w-5 h-5" src="/avatar.svg" alt="">
+            </p>
         </div>
-        <div v-if="!playerOneAlphabet" class="flex items-center m-auto w-fit py-2">       
+        <div v-if="!playerOne" class="flex items-center m-auto w-fit py-2">       
             <div class="flex justify-center gap-2 items-center">
-                <div @click="setPlayerOneAlphabet('X')" class="p-4 flex items-center justify-center border border-neutral-700 hover:bg-neutral-900 h-6 w-6 rounded-full hover:border-green-500 hover:text-green-400">X</div>
-                <div class="border h-10 border-slate-500 rotate-[15deg]"></div>
-                <div @click="setPlayerOneAlphabet('O')" class="p-4 flex items-center justify-center border border-neutral-700 hover:bg-neutral-900 h-6 w-6 rounded-full hover:border-green-500 hover:text-green-400">O</div>
+                <div @click="setSymbol('X')" class="p-4 flex items-center justify-center border border-black hover:bg-neutral-900 h-6 w-6 rounded-full hover:border-green-500 hover:text-green-400 animate-pulse cursor-pointer">X</div>
+                <div class="border h-10 border-black rotate-[15deg]"></div>
+                <div @click="setSymbol('O')" class="p-4 flex items-center justify-center border border-black hover:bg-neutral-900 h-6 w-6 rounded-full hover:border-green-500 hover:text-green-400 animate-pulse cursor-pointer">O</div>
             </div>
         </div>
-        <div v-else class="flex justify-center gap-4 items-center text-slate-400 py-2">
+        <div v-else class="flex justify-center gap-4 items-center text-black py-2">
             <div class="flex items-center gap-2">
-                <div class="font-mono text-3xl">{{ playerOneAlphabet }}</div>
-                <div class="p-4 flex items-center justify-center border border-neutral-700 hover:bg-neutral-900 h-6 w-6 font-mono text-white text-lg">{{ playerOneWins }}</div>
+                <div class="exo text-3xl font-bold">{{ playerOne }}</div>
+                <div class="p-4 flex items-center justify-center border border-neutral-700 hover:bg-neutral-900 h-6 w-6 font-mono text-zinc-400 text-xl">{{ playerOneWins }}</div>
             </div>
-            <div class="border h-10 border-slate-500 rotate-[15deg]"></div>
+            <div class="border h-10 border-black rotate-[15deg]"></div>
             <div class="flex items-center gap-2">
-                <div class="p-4 flex items-center justify-center border border-neutral-700 hover:bg-neutral-900 h-6 w-6 font-mono text-white text-lg">{{ playerTwoWins }}</div>
-                <div class="font-mono text-3xl">{{ vsPC ? computerAlphabet : playerTwoAlphabet }}</div>
+                <div class="p-4 flex items-center justify-center border border-neutral-700 hover:bg-neutral-900 h-6 w-6 font-mono text-zinc-400 text-xl">{{ playerTwoWins }}</div>
+                <div class="exo text-3xl font-bold">{{ playerTwo }}</div>
             </div>
         </div>
     </div>
@@ -30,15 +38,12 @@ import { ref, watch } from "vue";
 import { useGameStore } from '../stores/GameStore';
 import { storeToRefs } from 'pinia';
 
-const selectedGameType = ref(false)
-
 const gameStore = useGameStore()
-const {playerOneAlphabet, playerTwoAlphabet, computerAlphabet, playerOneWins, playerTwoWins, vsPC} = storeToRefs(gameStore)
-const {setPlayerOneAlphabet, clearAndRestart} = gameStore
+const {playerOne, playerTwo, playerOneWins, playerTwoWins, vsPC} = storeToRefs(gameStore)
+const {setSymbol, restart} = gameStore
 
 watch(vsPC, (newVal) => {
-    playerOneAlphabet.value = ''
-    selectedGameType.value = true
-    clearAndRestart()
+    playerOne.value = ''
+    restart()
 })
 </script>
