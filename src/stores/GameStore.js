@@ -17,6 +17,8 @@ export const useGameStore = defineStore('gameStore', () => {
   const playerOneWins = ref(0)
   const playerTwoWins = ref(0)
   const vsPC = ref(false)
+  const resetGame = ref(false)
+  const openModal = ref(false)
   
   const winCombo = ref([
     [1, 2, 3],
@@ -94,15 +96,25 @@ export const useGameStore = defineStore('gameStore', () => {
     Array.from(squares.value.children).forEach(each => each.innerText = '')
   }
 
-  function restart() {
+  function restart(boolean) {
+    openModal.value = false
+    if (!boolean) return
     reset()
     playerOneWins.value = 0
     playerTwoWins.value = 0
+  }
+  
+  function undoMove() {
+    if (!boxesID.value.length) return
+    let lastMoveIndex = boxesID.value[boxesID.value.length - 1]
+    Array.from(squares.value.children).filter(el => el.id === lastMoveIndex)[0].innerText = ''
+    boxesID.value.pop()
   }
 
   return {
     checkWin,
     restart,
+    undoMove,
     reset,
     setSymbol,
     play,
@@ -110,11 +122,13 @@ export const useGameStore = defineStore('gameStore', () => {
     playerTwoWins,
     playerOneWins,
     winIndexes,
+    resetGame,
     turn,
     playerTwoIndexes,
     playerOneIndexes,
     playerTwo,
     playerOne,
+    openModal,
     drawTies,
     boxesID,
     start,
