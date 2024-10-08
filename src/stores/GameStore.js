@@ -103,6 +103,7 @@ export const useGameStore = defineStore('gameStore', () => {
     reset()
     playerOneWins.value = 0
     playerTwoWins.value = 0
+    drawTies.value = 0
   }
   
   function undoMove() {
