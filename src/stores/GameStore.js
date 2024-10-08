@@ -88,6 +88,7 @@ export const useGameStore = defineStore('gameStore', () => {
   }
   
   function reset() {
+    openModal.value = false
     start.value = false;
     boxesID.value = []
     winIndexes.value = [];
@@ -105,6 +106,7 @@ export const useGameStore = defineStore('gameStore', () => {
   }
   
   function undoMove() {
+    openModal.value = false
     if (!boxesID.value.length) return
     let lastMoveIndex = boxesID.value[boxesID.value.length - 1]
     Array.from(squares.value.children).filter(el => el.id === lastMoveIndex)[0].innerText = ''
