@@ -8,7 +8,7 @@
                 :winIndex="winIndexes.length > 0 && winIndexes.includes(index)"
                 :index="index" />
             </div>
-            <div  v-if="start || playerOneWins || playerTwoWins || drawTies" class="text-center text-sm space-x-1 py-4 flex">
+            <div  v-if="start || playerOneWins || playerTwoWins || drawTies" class="text-center text-sm space-x-1 py-4 flex w-fit m-auto">
                 <button class="p-1 px-8 text-white bg-yellow-800 hover:bg-yellow-600 rounded-l-full exo" @click="undoMove()" type="">UNDO</button>
                 <div class="relative">
                     <div class="text-center absolute bottom-[50px] left-[50%] translate-x-[-50%] rounded-md bg-red-400 p-2 shadow-sm shadow-black exo text-sm space-y-2 after:bg-red-700 after:z-[99999999] after:h-4 after-w-10 after:absolute after:top-[100%] after:left-[50%] after:translate-x-[-50%] after:border-r-0 after:border-l-0 after:border-t-1" v-if="openModal">
